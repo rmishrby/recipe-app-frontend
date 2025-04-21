@@ -1,70 +1,124 @@
-# Getting Started with Create React App
+# Recipe Finder Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React-based web application for searching and viewing recipes with typeahead/autocomplete functionality.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Typeahead Search**: Search for recipes by name or cuisine with real-time suggestions
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Recipe Details**: View detailed information about each recipe including ingredients and instructions
+- **Lazy Loading**: Optimized performance with code splitting and lazy loading
+- **Error Handling**: Comprehensive error handling with user-friendly notifications
+- **Pagination**: Browse through recipes with pagination support
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend Framework**: React.js
+- **UI Library**: Material-UI (MUI)
+- **State Management**: React Hooks
+- **HTTP Client**: Axios
+- **Routing**: React Router
+- **Testing**: Jest and React Testing Library
+- **Code Splitting**: React.lazy() and Suspense
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- Backend API running (see Backend Setup section)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd recipe-app-frontend
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Create a `.env` file in the root directory with the following content:
+   ```
+   REACT_APP_API_BASE_URL=http://localhost:8080/api
+   REACT_APP_MIN_SEARCH_LENGTH=3
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Running the Application
 
-### `npm run eject`
+### Development Mode
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This will start the development server at [http://localhost:3000](http://localhost:3000).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Production Build
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+npm run build
+```
 
-## Learn More
+This will create an optimized production build in the `build` folder.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Testing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Running Tests
 
-### Code Splitting
+```
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Test Coverage
 
-### Analyzing the Bundle Size
+```
+npm run test:coverage
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This will generate a coverage report showing the percentage of code covered by tests.
 
-### Making a Progressive Web App
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The project follows an atomic design pattern:
 
-### Advanced Configuration
+- **atoms**: Basic building blocks (Logo, RecipePagination)
+- **molecules**: Simple combinations of atoms (Header, SearchBar)
+- **organisms**: Complex UI components (RecipeList, RecipeDetails)
+- **page**: Complete pages (HomePage, NotFoundPage)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## API Integration
 
-### Deployment
+The application integrates with a RESTful API for recipe data:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Search Recipes**: `GET /api/recipes/search?query={searchTerm}&page={page}&size={size}`
+- **Get All Recipes**: `GET /api/recipes/findAll?page={page}&size={size}`
+- **Get Recipe Details**: `GET /api/recipes/{id}`
 
-### `npm run build` fails to minify
+## Backend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This frontend application requires a backend API to function properly. The backend should provide the following endpoints:
+
+1. **Search Recipes**: Returns recipes matching the search query
+2. **Get All Recipes**: Returns paginated list of all recipes
+3. **Get Recipe Details**: Returns detailed information about a specific recipe
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Material-UI for the component library
+- React team for the amazing framework
+- All contributors who have helped improve this project

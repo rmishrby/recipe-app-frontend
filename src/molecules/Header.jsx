@@ -26,12 +26,23 @@ const Header = ({
 
         debounceRef.current = setTimeout(() => {
             axios
-                .get(`http://localhost:8080/api/recipes/search`, {
+                .get(`${process.env.REACT_APP_API_BASE_URL}/recipes/search`, {
                     params: { query: value, page: 1, size: 10 },
                 })
-                .then((res) => setSuggestions(res.data))
-                .catch((err) => console.error('Search error:', err));
-        }, 1000);
+                .then((res) => {
+                    if (res.data && Array.isArray(res.data)) {
+                        setSuggestions(res.data);
+                    } else {
+                        setSuggestions([]);
+                        setShowNotFound(true);
+                    }
+                })
+                .catch((err) => {
+                    console.error('Search error:', err);
+                    setSuggestions([]);
+                    setShowNotFound(true);
+                });
+        }, 300); // Reduced debounce time for better responsiveness
     };
 
 

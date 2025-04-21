@@ -6,6 +6,7 @@ import RecipeList from '../organism/RecipeList';
 import RecipePagination from '../atoms/RecipePagination';
 import axios from 'axios';
 import NotFoundPage from './NotFoundPage';
+import { Alert, Snackbar } from '@mui/material';
 
 const HomePage = () => {
     const [page, setPage] = useState(1);
@@ -14,19 +15,36 @@ const HomePage = () => {
     const [recipeList, setRecipeList] = useState([]);
     const [selectedRecipe, setSelectedRecipe] = useState(undefined);
     const [showNotFound, setShowNotFound] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:8080/api/recipes/findAll?page=${page - 1}&size=5`)
-            .then((response) => {
+        const fetchRecipes = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_BASE_URL}/recipes/findAll`,
+                    {
+                        params: {
+                            page: page - 1,
+                            size: 5
+                        }
+                    }
+                );
                 const data = response.data;
                 setRecipeList(data.recipes || []);
                 setTotalPages(Math.ceil(data.total / data.limit));
-            })
-            .catch((error) => {
+                setError(null);
+            } catch (error) {
                 console.error('Error fetching recipe list:', error);
-            });
+                setError('Failed to fetch recipes. Please try again later.');
+            }
+        };
+
+        fetchRecipes();
     }, [page]);
+
+    const handleCloseError = () => {
+        setError(null);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -39,25 +57,30 @@ const HomePage = () => {
             />
 
             {selectedRecipe ? (
-                <RecipeDetails selectedRecipe={selectedRecipe} />) : showNotFound ? <NotFoundPage
+                <RecipeDetails selectedRecipe={selectedRecipe} />
+            ) : showNotFound ? (
+                <NotFoundPage
                     setSelectedRecipe={setSelectedRecipe}
                     setShowNotFound={setShowNotFound}
-                /> :
+                />
+            ) : (
+                <>
+                    <RecipeList
+                        recipeList={recipeList}
+                        setSelectedRecipe={setSelectedRecipe}
+                    />
+                    <RecipePagination
+                        totalPages={totalPages}
+                        setPage={setPage}
+                    />
+                </>
+            )}
 
-                (
-                    <>
-                        <RecipeList
-                            recipeList={recipeList}
-                            setSelectedRecipe={setSelectedRecipe}
-                        />
-                        <RecipePagination
-                            totalPages={totalPages}
-                            setPage={setPage}
-                        />
-                    </>
-                )
-            }
-
+            <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+                    {error}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
